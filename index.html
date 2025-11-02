@@ -1,0 +1,644 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Projets d'Étude - Body & Space</title>
+    
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;600;700&family=Inter:wght@300;400;500;600&display=swap');
+
+        :root {
+            --font-heading: 'Cormorant Garamond', serif;
+            --font-body: 'Inter', sans-serif;
+            
+            --color-bg: #0a0a0a;
+            --color-surface: #141414;
+            --color-card: #1a1a1a;
+            --color-text: #f5f5f5;
+            --color-text-muted: #b0b0b0;
+            --color-primary: #d4af37;
+            --color-accent: #c9a961;
+            --color-border: #2a2a2a;
+            --color-hover: #1f1f1f;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: var(--font-body);
+            line-height: 1.8;
+            background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 100%);
+            color: var(--color-text);
+            padding: 40px 20px;
+            scroll-behavior: smooth;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: var(--color-surface);
+            padding: 60px;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6),
+                        0 0 1px 1px rgba(212, 175, 55, 0.1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, 
+                transparent, 
+                var(--color-primary), 
+                transparent);
+        }
+
+        h1 {
+            font-family: var(--font-heading);
+            font-weight: 300;
+            color: var(--color-primary);
+            font-size: 3.5em;
+            margin-bottom: 20px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            position: relative;
+            padding-bottom: 20px;
+        }
+
+        h1::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 120px;
+            height: 2px;
+            background: linear-gradient(90deg, var(--color-primary), transparent);
+        }
+
+        .subtitle {
+            font-size: 1.1em;
+            color: var(--color-text-muted);
+            margin-bottom: 50px;
+            font-weight: 300;
+            line-height: 1.6;
+        }
+
+        .subtitle strong {
+            color: var(--color-accent);
+            font-weight: 500;
+        }
+
+        h2 {
+            font-family: var(--font-heading);
+            color: var(--color-accent);
+            margin: 50px 0 30px 0;
+            font-size: 2em;
+            font-weight: 400;
+            letter-spacing: 1px;
+        }
+
+        .project-list {
+            display: grid;
+            gap: 20px;
+        }
+
+        .project-list details {
+            background: var(--color-card);
+            border: 1px solid var(--color-border);
+            border-radius: 12px;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            overflow: hidden;
+            position: relative;
+        }
+
+        .project-list details::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 3px;
+            height: 100%;
+            background: var(--color-primary);
+            opacity: 0;
+            transition: opacity 0.4s;
+        }
+
+        .project-list details:hover {
+            border-color: var(--color-primary);
+            transform: translateX(5px);
+            box-shadow: 0 10px 30px rgba(212, 175, 55, 0.15);
+        }
+
+        .project-list details:hover::before {
+            opacity: 1;
+        }
+
+        .project-list summary {
+            font-size: 1.3em;
+            font-weight: 500;
+            font-family: var(--font-heading);
+            padding: 28px 70px 28px 30px;
+            cursor: pointer;
+            outline: none;
+            color: var(--color-text);
+            position: relative;
+            list-style: none;
+            transition: all 0.3s;
+            user-select: none;
+        }
+
+        .project-list summary::-webkit-details-marker {
+            display: none;
+        }
+
+        .project-list summary::after {
+            content: '+';
+            font-family: var(--font-body);
+            font-size: 2em;
+            font-weight: 300;
+            color: var(--color-primary);
+            position: absolute;
+            right: 30px;
+            top: 50%;
+            transform: translateY(-50%) rotate(0deg);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .project-list details[open] summary {
+            background: linear-gradient(90deg, var(--color-hover), transparent);
+            color: var(--color-primary);
+            border-bottom: 1px solid var(--color-border);
+        }
+
+        .project-list details[open] summary::after {
+            transform: translateY(-50%) rotate(135deg);
+        }
+
+        .project-content {
+            padding: 40px 30px;
+            animation: fadeIn 0.5s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .project-image {
+            width: 100%;
+            max-height: 550px;
+            object-fit: cover;
+            border-radius: 8px;
+            margin-bottom: 35px;
+            border: 1px solid var(--color-border);
+            transition: transform 0.3s;
+        }
+
+        .project-image:hover {
+            transform: scale(1.01);
+        }
+
+        h3 {
+            font-family: var(--font-heading);
+            color: var(--color-primary);
+            margin-top: 35px;
+            margin-bottom: 15px;
+            font-size: 1.6em;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+        }
+
+        p {
+            margin-bottom: 20px;
+            font-weight: 300;
+            color: var(--color-text-muted);
+            line-height: 1.9;
+        }
+
+        p strong {
+            color: var(--color-text);
+            font-weight: 500;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+            margin-top: 25px;
+            font-size: 0.95em;
+            border-radius: 8px;
+            overflow: hidden;
+            border: 1px solid var(--color-border);
+        }
+
+        th, td {
+            padding: 18px;
+            text-align: left;
+            color: var(--color-text-muted);
+            border-bottom: 1px solid var(--color-border);
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        th {
+            background: var(--color-hover);
+            color: var(--color-primary);
+            font-family: var(--font-heading);
+            font-weight: 500;
+            font-size: 1.05em;
+            letter-spacing: 0.5px;
+        }
+
+        td:first-child {
+            font-weight: 500;
+            color: var(--color-text);
+        }
+
+        tr {
+            transition: background 0.2s;
+        }
+
+        tbody tr:hover {
+            background: rgba(212, 175, 55, 0.03);
+        }
+
+        a {
+            color: var(--color-accent);
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.2s;
+            position: relative;
+            display: inline-block;
+        }
+
+        a::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 0;
+            height: 1px;
+            background: var(--color-primary);
+            transition: width 0.3s;
+        }
+
+        a:hover {
+            color: var(--color-primary);
+        }
+
+        a:hover::after {
+            width: 100%;
+        }
+
+        @media (max-width: 768px) {
+            body {
+                padding: 20px 10px;
+            }
+
+            .container {
+                padding: 30px 20px;
+            }
+
+            h1 {
+                font-size: 2.2em;
+            }
+
+            .project-list summary {
+                font-size: 1.1em;
+                padding: 20px 60px 20px 20px;
+            }
+
+            .project-content {
+                padding: 25px 20px;
+            }
+
+            table {
+                font-size: 0.85em;
+            }
+
+            th, td {
+                padding: 12px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Body & Space</h1>
+    <p class="subtitle">
+        <strong>Module:</strong> Atelier ARCHI _ 110 | 
+        <strong>Enseignante:</strong> Siham EL RHARBI | 
+        <strong>Thématique:</strong> Architectures of the Minimal
+    </p>
+    
+    <h2>Catalogue des 18 Projets</h2>
+
+    <div class="project-list">
+
+        <details>
+            <summary>1. Row House (Azuma House), Osaka (1976) — Tadao Ando</summary>
+            <div class="project-content">
+                <img src="https://images.adsttc.com/media/images/5037/defa/28ba/0d59/9b00/01f8/large_jpg/stringio.jpg" alt="Cour centrale de la Row House" class="project-image">
+                <h3>Concept & Architecture</h3>
+                <p>La <strong>Maison Azuma</strong> est un manifeste précoce de l'architecture d'Ando. Insérée dans un tissu urbain dense, elle se caractérise par son <strong>extrême minimalisme</strong> en béton brut. Le bâtiment est un volume fermé sur l'extérieur pour préserver l'intimité, organisé autour d'une <strong>cour centrale à ciel ouvert</strong>.</p>
+                <h3>5 Références & Points Clés pour l'Étude</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Type de Source</th>
+                            <th>Lien</th>
+                            <th>Point Clé à Explorer</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Source Initiale</td>
+                            <td><a href="https://archeyes.com/row-house-by-tadao-ando-azuma-house-light-space-concrete/" target="_blank">archeyes.com</a></td>
+                            <td>Relation entre l'espace intérieur et le patio</td>
+                        </tr>
+                        <tr>
+                            <td>Monographie</td>
+                            <td><a href="https://www.taschen.com/en/books/architecture-design/45423/ando-complete-works-1975-today" target="_blank">Taschen: Ando Complete Works</a></td>
+                            <td>Coupes de façade essentielles</td>
+                        </tr>
+                        <tr>
+                            <td>Analyse de Plan</td>
+                            <td><a href="https://www.archdaily.com/102875/ad-classics-azuma-house-tadao-ando" target="_blank">ArchDaily</a></td>
+                            <td>Plan horizontal et division des fonctions</td>
+                        </tr>
+                        <tr>
+                            <td>Détail Technique</td>
+                            <td><a href="https://www.detail.de/de/de/tadao-ando-meister-des-betons-105828/" target="_blank">Detail Magazine</a></td>
+                            <td>Texture du béton et traces de coffrage</td>
+                        </tr>
+                        <tr>
+                            <td>Citation Clé</td>
+                            <td><a href="https://www.architectural-digest.com/story/tadao-ando-interview" target="_blank">Architectural Digest</a></td>
+                            <td>"Un espace où les occupants ressentent le vent et la pluie"</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </details>
+
+        <details>
+            <summary>2. The Final Wooden House (2006) — Sou Fujimoto Architects</summary>
+            <div class="project-content">
+                <img src="https://images.adsttc.com/media/images/500f/4166/28ba/0d4e/2600/0179/large_jpg/stringio.jpg" alt="Intérieur de la Final Wooden House" class="project-image">
+                <h3>Concept & Architecture</h3>
+                <p>La <strong>Final Wooden House</strong> est un manifeste du concept de « futur primitif » de Fujimoto. Elle est construite à partir de <strong>pièces de bois carrées de 35cm</strong> empilées, créant une structure où la distinction entre mur, sol, plafond et mobilier est brouillée.</p>
+                <h3>5 Références & Points Clés pour l'Étude</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Type de Source</th>
+                            <th>Lien</th>
+                            <th>Point Clé à Explorer</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Source Initiale</td>
+                            <td><a href="https://divisare.com/projects/218466-sou-fujimoto-architects-iwan-baan-final-wooden-house" target="_blank">divisare.com</a></td>
+                            <td>Photographies d'Iwan Baan</td>
+                        </tr>
+                        <tr>
+                            <td>Monographie</td>
+                            <td><a href="https://www.lars-mueller-publishers.com/sou-fujimoto-primitive-future" target="_blank">Lars Müller: Primitive Future</a></td>
+                            <td>Diagramme du système d'empilement</td>
+                        </tr>
+                        <tr>
+                            <td>Article Critique</td>
+                            <td><a href="https://www.dezeen.com/2008/04/24/final-wooden-house-by-sou-fujimoto/" target="_blank">Dezeen</a></td>
+                            <td>Concept de domesticité</td>
+                        </tr>
+                        <tr>
+                            <td>Détail Technique</td>
+                            <td><a href="https://ja.wikipedia.org/wiki/JA_(%E9%9B%91%E8%AA%8C)" target="_blank">Revue JA (Japan Architect)</a></td>
+                            <td>Assemblage et fixations des blocs</td>
+                        </tr>
+                        <tr>
+                            <td>Conférence</td>
+                            <td><a href="https://www.youtube.com/watch?v=0kFj9S75i7A" target="_blank">YouTube: Sou Fujimoto Lecture</a></td>
+                            <td>Métaphore de la caverne</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </details>
+
+        <details>
+            <summary>3. Saint Benedict Chapel, Sumvitg (1988) — Peter Zumthor</summary>
+            <div class="project-content">
+                <img src="https://images.adsttc.com/media/images/5038/0333/28ba/0d59/9b00/0358/large_jpg/stringio.jpg" alt="Intérieur de la Chapelle Saint-Benoît" class="project-image">
+                <h3>Concept & Architecture</h3>
+                <p>La <strong>Chapelle Saint-Benoît</strong> illustre la philosophie de Zumthor sur la <strong>sensualité des matériaux</strong>. Construite en <strong>bois de mélèze local</strong>, avec une <strong>forme en goutte d'eau</strong>, elle s'harmonise avec le paysage alpin. L'accent est mis sur l'artisanat et l'expérience corporelle de l'espace.</p>
+                <h3>5 Références & Points Clés pour l'Étude</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Type de Source</th>
+                            <th>Lien</th>
+                            <th>Point Clé à Explorer</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Source Initiale</td>
+                            <td><a href="https://www.thisispaper.com/mag/saint-benedict-chapel-peter-zumthor" target="_blank">thisispaper.com</a></td>
+                            <td>Forme et bardeaux en bois</td>
+                        </tr>
+                        <tr>
+                            <td>Monographie</td>
+                            <td><a href="https://www.lars-mueller-publishers.com/peter-zumthor-works-buildings-and-projects-1979-1997" target="_blank">Lars Müller: Peter Zumthor Works</a></td>
+                            <td>Plans et coupes détaillées</td>
+                        </tr>
+                        <tr>
+                            <td>Photographie d'Art</td>
+                            <td><a href="https://helenelbinet.com/projects/peter-zumthor-st-benedict-chapel/" target="_blank">Portfolio Hélène Binet</a></td>
+                            <td>Ambiances intérieures et lumière</td>
+                        </tr>
+                        <tr>
+                            <td>Théorie</td>
+                            <td><a href="https://www.birkhauser.ch/en/books/9783034605554" target="_blank">Birkhauser: Penser l'Architecture</a></td>
+                            <td>"Construire un bâtiment est l'art de construire des significations"</td>
+                        </tr>
+                        <tr>
+                            <td>Article de Revue</td>
+                            <td><a href="https://www.architectural-review.com/buildings/st-benedict-chapel-in-sumvitg-switzerland-by-peter-zumthor" target="_blank">The Architectural Review</a></td>
+                            <td>Insertion paysagère</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </details>
+
+        <details>
+            <summary>4. Moriyama House, Tokyo (2005) — SANAA</summary>
+            <div class="project-content">
+                <img src="https://images.adsttc.com/media/images/5527/3338/e58e/ce43/a100/0178/large_jpg/1.jpg" alt="Vue extérieure de la Moriyama House" class="project-image">
+                <h3>Concept & Architecture</h3>
+                <p>La <strong>Moriyama House</strong> est un ensemble de <strong>dix volumes cubiques indépendants</strong> dispersés sur une petite parcelle. Chaque volume est une fonction distincte, et les espaces extérieurs entre eux deviennent des <strong>chemins de circulation et des espaces partagés</strong>.</p>
+                <h3>5 Références & Points Clés pour l'Étude</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Type de Source</th>
+                            <th>Lien</th>
+                            <th>Point Clé à Explorer</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Source Initiale</td>
+                            <td><a href="https://www.dezeen.com/2025/01/11/ryue-nishizawa-moriyama-house-21-century-buildings/" target="_blank">dezeen.com</a></td>
+                            <td>Impact social du morcellement</td>
+                        </tr>
+                        <tr>
+                            <td>Revue Spécialisée</td>
+                            <td><a href="https://www.archdaily.com/60968/moriyama-house-ryue-nishizawa" target="_blank">ArchDaily</a></td>
+                            <td>Axonométrie éclatée</td>
+                        </tr>
+                        <tr>
+                            <td>El Croquis</td>
+                            <td><a href="https://elcroquis.es/products/121-122-sanaa-sejima-nishizawa-1998-2004" target="_blank">El Croquis 121/122</a></td>
+                            <td>Entretien avec Ryue Nishizawa</td>
+                        </tr>
+                        <tr>
+                            <td>Détail Technique</td>
+                            <td><a href="https://divisare.com/projects/163836-ryue-nishizawa-iwan-baan-moriyama-house" target="_blank">Divisare</a></td>
+                            <td>Façade en tôle d'acier</td>
+                        </tr>
+                        <tr>
+                            <td>Vidéo/Témoignage</td>
+                            <td><a href="https://www.youtube.com/watch?v=kDFy1hCcj-4" target="_blank">YouTube: Moriyama-San</a></td>
+                            <td>Utilisation quotidienne des volumes</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </details>
+
+        <details>
+            <summary>5. Cabanon de vacances, Roquebrune-Cap-Martin (1952) — Le Corbusier</summary>
+            <div class="project-content">
+                <img src="https://lecorbusier-worldheritage.org/wp-content/uploads/2020/06/cabanon-interieur-1-scaled.jpg" alt="Intérieur du Cabanon de Le Corbusier" class="project-image">
+                <h3>Concept & Architecture</h3>
+                <p>Le <strong>Cabanon</strong> mesure exactement <strong>3,66 m x 3,66 m</strong>, entièrement basé sur le système de proportions du <strong>Modulor</strong>. C'est l'expression d'un mode de vie ascétique et d'un confort absolu dans le strict minimum.</p>
+                <h3>5 Références & Points Clés pour l'Étude</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Type de Source</th>
+                            <th>Lien</th>
+                            <th>Point Clé à Explorer</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Source Initiale</td>
+                            <td><a href="https://lecorbusier-worldheritage.org/cabanon-de-le-corbusier/" target="_blank">lecorbusier-worldheritage.org</a></td>
+                            <td>Intégration du Cabanon dans le site</td>
+                        </tr>
+                        <tr>
+                            <td>Ouvrage Fondamental</td>
+                            <td><a href="https://fondationlecorbusier.fr/oeuvre/le-cabanon-roquebrune-cap-martin-1951/" target="_blank">Fondation Le Corbusier</a></td>
+                            <td>Dessins originaux et application du Modulor</td>
+                        </tr>
+                        <tr>
+                            <td>Analyse du Minimalisme</td>
+                            <td><a href="https://www.architectural-review.com/buildings/revisit-le-corbusiers-cabanon" target="_blank">The Architectural Review</a></td>
+                            <td>Palette de couleurs (rouge, vert, jaune)</td>
+                        </tr>
+                        <tr>
+                            <td>Détail Technique</td>
+                            <td><a href="https://www.archdaily.com/163206/ad-classics-cabanon-le-corbusier" target="_blank">ArchDaily</a></td>
+                            <td>Système de préfabrication en bois</td>
+                        </tr>
+                        <tr>
+                            <td>Citation Clé</td>
+                            <td><a href="https://capmoderne.com/fr/lieu/le-cabanon/" target="_blank">Cap Moderne</a></td>
+                            <td>"J'ai un château sur la Côte d'Azur de 3,66m par 3,66m"</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </details>
+
+        <details>
+            <summary>6. House NA, Tokyo (2011) — Sou Fujimoto</summary>
+            <div class="project-content">
+                <img src="https://images.adsttc.com/media/images/500f/41bf/28ba/0d4e/2600/017c/large_jpg/stringio.jpg" alt="Vue extérieure de la House NA" class="project-image">
+                <h3>Concept & Architecture</h3>
+                <p>La <strong>House NA</strong> est composée de <strong>21 dalles de plancher</strong> disposées à différentes hauteurs. Inspirée par l'idée de « vivre dans un arbre », elle explore la transparence radicale avec des murs presque entièrement en verre.</p>
+                <h3>5 Références & Points Clés pour l'Étude</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Type de Source</th>
+                            <th>Lien</th>
+                            <th>Point Clé à Explorer</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Source Initiale</td>
+                            <td><a href="https://www.thisispaper.com/mag/house-na-sou-fujimoto-architects" target="_blank">thisispaper.com</a></td>
+                            <td>Concept de l'arbre architectural</td>
+                        </tr>
+                        <tr>
+                            <td>Revue Photographique</td>
+                            <td><a href="https://divisare.com/projects/174983-sou-fujimoto-architects-iwan-baan-house-na" target="_blank">Divisare</a></td>
+                            <td>Reportage photographique d'Iwan Baan</td>
+                        </tr>
+                        <tr>
+                            <td>Détail Technique</td>
+                            <td><a href="https://www.archdaily.com/229006/house-na-sou-fujimoto-architects" target="_blank">ArchDaily</a></td>
+                            <td>Coupe axonométrique des 21 plateformes</td>
+                        </tr>
+                        <tr>
+                            <td>Conférence</td>
+                            <td><a href="https://www.youtube.com/watch?v=eJq823q2yvQ" target="_blank">YouTube: Sou Fujimoto Lecture</a></td>
+                            <td>Gestion de l'intimité et "séparation douce"</td>
+                        </tr>
+                        <tr>
+                            <td>Article Critique</td>
+                            <td><a href="https://www.architectural-review.com/buildings/house-na-by-sou-fujimoto-architects-tokyo-japan" target="_blank">The Architectural Review</a></td>
+                            <td>Habitat transparent en contexte urbain dense</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </details>
+
+        <details>
+            <summary>7. Skyspaces (depuis 1979) — James Turrell</summary>
+            <div class="project-content">
+                <img src="https://jamesturrell.com/wp-content/uploads/2018/02/JTSP_10_color-1600x1067.jpg" alt="Un Skyspace de James Turrell" class="project-image">
+                <h3>Concept & Architecture</h3>
+                <p>Les <strong>Skyspaces</strong> sont des installations avec une <strong>ouverture (oculus)</strong> dans le toit qui encadre le ciel. En modifiant l'éclairage intérieur, l'artiste transforme le ciel en une surface bidimensionnelle de couleur pure. C'est une exploration phénoménologique de la lum
