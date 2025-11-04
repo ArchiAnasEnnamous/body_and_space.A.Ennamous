@@ -16,7 +16,7 @@
             --color-surface: #141414;
             --color-card: #1a1a1a;
             --color-text: #f5f5f5;
-            --color-text-muted: #b0b0b0;
+            --color-text-muted: #b0b0b0; /* Conserve pour référence, mais p est plus clair */
             --color-primary: #d4af37;
             --color-accent: #c9a961;
             --color-border: #2a2a2a;
@@ -29,6 +29,7 @@
             padding: 0;
         }
 
+        /* CORRIGÉ : Cible la balise <body> directement, et non une classe .body */
         body {
             font-family: var(--font-body);
             line-height: 1.8;
@@ -37,7 +38,52 @@
             padding: 40px 20px;
             scroll-behavior: smooth;
             min-height: 100vh;
+            position: relative;
+            overflow-x: hidden;
         }
+        
+        .star {
+            position: absolute;
+            background: var(--color-primary);
+            
+            /* AMÉLIORATION : Forme d'étoile à 4 pointes */
+            clip-path: polygon(50% 0%, 60% 40%, 100% 50%, 60% 60%, 50% 100%, 40% 60%, 0% 50%, 40% 40%);
+            
+            /* Assure que la transformation JS coexiste */
+            transform: scale(1);
+            
+            /* AMÉLIORATION : Opacité de base (pour le fondu initial) */
+            opacity: 0;
+            
+            /* AMÉLIORATION : La transition gère le fondu "lent" et "aléatoire" */
+            transition: opacity 2.5s ease-in-out;
+        }
+
+        /* ----- NOUVELLES COUCHES DE PROFONDEUR ----- */
+        /* La lueur (filter) est maintenant la seule propriété ici */
+
+        /* Couche 3 : Lointaine (Petite, Floue, Lente) */
+        .star.small {
+            width: 3px;
+            height: 3px;
+            filter: blur(0.8px) drop-shadow(0 0 3px var(--color-primary));
+        }
+
+        /* Couche 2 : Intermédiaire (Moyenne, Nette, Rapide) */
+        .star.medium {
+            width: 6px;
+            height: 6px;
+            filter: blur(0.2px) drop-shadow(0 0 8px var(--color-primary));
+        }
+
+        /* Couche 1 : Proche (Grande, Très Nette, Très Rapide) */
+        .star.large {
+            width: 9px;
+            height: 9px;
+            filter: drop-shadow(0 0 10px var(--color-primary))
+                    drop-shadow(0 0 15px var(--color-accent));
+        }
+
 
         .container {
             max-width: 1400px;
@@ -49,6 +95,7 @@
                         0 0 1px 1px rgba(212, 175, 55, 0.1);
             position: relative;
             overflow: hidden;
+            z-index: 1;
         }
 
         .container::before {
@@ -214,6 +261,8 @@
             margin-bottom: 35px;
             border: 1px solid var(--color-border);
             transition: transform 0.3s;
+            /* AMÉLIORATION : Ajout d'une couleur de fond pour le chargement */
+            background-color: var(--color-card);
         }
 
         .project-image:hover {
@@ -230,10 +279,11 @@
             letter-spacing: 0.5px;
         }
 
+        /* AMÉLIORATION : Police plus claire pour meilleure lisibilité */
         p {
             margin-bottom: 20px;
             font-weight: 300;
-            color: var(--color-text-muted);
+            color: #d1d1d1; /* Éclairci par rapport à #b0b0b0 */
             line-height: 1.9;
         }
 
@@ -347,6 +397,7 @@
     </style>
 </head>
 <body>
+    <div class="stars" id="stars"></div>
 
 <div class="container">
     <h1>Body & Space</h1>
@@ -363,7 +414,7 @@
         <details>
             <summary>1. Row House (Azuma House), Osaka (1976) — Tadao Ando</summary>
             <div class="project-content">
-                <img src="https://images.adsttc.com/media/images/5037/defa/28ba/0d59/9b00/01f8/large_jpg/stringio.jpg?1414197464" alt="Cour centrale de la Row House" class="project-image">
+                <img src="https://via.placeholder.com/1200x675/1a1a1a/d4af37?text=1.+Row+House+(Azuma+House)" alt="Cour centrale de la Row House" class="project-image">
                 <h3>Concept & Architecture</h3>
                 <p>La <strong>Maison Azuma</strong> est un manifeste précoce de l'architecture d'Ando. Insérée dans un tissu urbain dense, elle se caractérise par son <strong>extrême minimalisme</strong> en béton brut. Le bâtiment est un volume fermé sur l'extérieur pour préserver l'intimité, organisé autour d'une <strong>cour centrale à ciel ouvert</strong>.</p>
                 <h3>5 Références & Points Clés pour l'Étude</h3>
@@ -409,7 +460,7 @@
         <details>
             <summary>2. The Final Wooden House (2006) — Sou Fujimoto Architects</summary>
             <div class="project-content">
-                <img src="https://images.adsttc.com/media/images/500f/4166/28ba/0d4e/2600/0179/large_jpg/stringio.jpg?1414457193" alt="Intérieur de la Final Wooden House" class="project-image">
+                <img src="https://via.placeholder.com/1200x675/1a1a1a/d4af37?text=2.+The+Final+Wooden+House" alt="Intérieur de la Final Wooden House" class="project-image">
                 <h3>Concept & Architecture</h3>
                 <p>La <strong>Final Wooden House</strong> est un manifeste du concept de « futur primitif » de Fujimoto. Elle est construite à partir de <strong>pièces de bois carrées de 35cm</strong> empilées, créant une structure où la distinction entre mur, sol, plafond et mobilier est brouillée.</p>
                 <h3>5 Références & Points Clés pour l'Étude</h3>
@@ -455,7 +506,7 @@
         <details>
             <summary>3. Saint Benedict Chapel, Sumvitg (1988) — Peter Zumthor</summary>
             <div class="project-content">
-                <img src="https://images.adsttc.com/media/images/5038/0333/28ba/0d59/9b00/0358/large_jpg/stringio.jpg?1414197479" alt="Intérieur de la Chapelle Saint-Benoît" class="project-image">
+                <img src="https://via.placeholder.com/1200x675/1a1a1a/d4af37?text=3.+Saint+Benedict+Chapel" alt="Intérieur de la Chapelle Saint-Benoît" class="project-image">
                 <h3>Concept & Architecture</h3>
                 <p>La <strong>Chapelle Saint-Benoît</strong> illustre la philosophie de Zumthor sur la <strong>sensualité des matériaux</strong>. Construite en <strong>bois de mélèze local</strong>, avec une <strong>forme en goutte d'eau</strong>, elle s'harmonise avec le paysage alpin. L'accent est mis sur l'artisanat et l'expérience corporelle de l'espace.</p>
                 <h3>5 Références & Points Clés pour l'Étude</h3>
@@ -501,7 +552,7 @@
         <details>
             <summary>4. Moriyama House, Tokyo (2005) — SANAA</summary>
             <div class="project-content">
-                <img src="https://images.adsttc.com/media/images/5527/3338/e58e/ce43/a100/0178/large_jpg/1.jpg?1428632367" alt="Vue extérieure de la Moriyama House" class="project-image">
+                <img src="https://via.placeholder.com/1200x675/1a1a1a/d4af37?text=4.+Moriyama+House" alt="Vue extérieure de la Moriyama House" class="project-image">
                 <h3>Concept & Architecture</h3>
                 <p>La <strong>Moriyama House</strong> est un ensemble de <strong>dix volumes cubiques indépendants</strong> dispersés sur une petite parcelle. Chaque volume est une fonction distincte, et les espaces extérieurs entre eux deviennent des <strong>chemins de circulation et des espaces partagés</strong>.</p>
                 <h3>5 Références & Points Clés pour l'Étude</h3>
@@ -547,7 +598,7 @@
         <details>
             <summary>5. Cabanon de vacances, Roquebrune-Cap-Martin (1952) — Le Corbusier</summary>
             <div class="project-content">
-                <img src="https://lecorbusier-worldheritage.org/wp-content/uploads/2020/06/cabanon-interieur-1-scaled.jpg" alt="Intérieur du Cabanon de Le Corbusier" class="project-image">
+                <img src="https://via.placeholder.com/1200x675/1a1a1a/d4af37?text=5.+Cabanon+de+vacances" alt="Intérieur du Cabanon de Le Corbusier" class="project-image">
                 <h3>Concept & Architecture</h3>
                 <p>Le <strong>Cabanon</strong> mesure exactement <strong>3,66 m x 3,66 m</strong>, entièrement basé sur le système de proportions du <strong>Modulor</strong>. C'est l'expression d'un mode de vie ascétique et d'un confort absolu dans le strict minimum.</p>
                 <h3>5 Références & Points Clés pour l'Étude</h3>
@@ -593,7 +644,7 @@
         <details>
             <summary>6. House NA, Tokyo (2011) — Sou Fujimoto</summary>
             <div class="project-content">
-                <img src="https://images.adsttc.com/media/images/500f/41bf/28ba/0d4e/2600/017c/large_jpg/stringio.jpg?1414457207" alt="Vue extérieure de la House NA" class="project-image">
+                <img src="https://via.placeholder.com/1200x675/1a1a1a/d4af37?text=6.+House+NA" alt="Vue extérieure de la House NA" class="project-image">
                 <h3>Concept & Architecture</h3>
                 <p>La <strong>House NA</strong> est composée de <strong>21 dalles de plancher</strong> disposées à différentes hauteurs. Inspirée par l'idée de « vivre dans un arbre », elle explore la transparence radicale avec des murs presque entièrement en verre.</p>
                 <h3>5 Références & Points Clés pour l'Étude</h3>
@@ -639,7 +690,7 @@
         <details>
             <summary>7. Skyspaces (depuis 1979) — James Turrell</summary>
             <div class="project-content">
-                <img src="https://jamesturrell.com/wp-content/uploads/2018/02/JTSP_10_color-1600x1067.jpg" alt="Un Skyspace de James Turrell" class="project-image">
+                <img src="https://via.placeholder.com/1200x675/1a1a1a/d4af37?text=7.+Skyspaces" alt="Un Skyspace de James Turrell" class="project-image">
                 <h3>Concept & Architecture</h3>
                 <p>Les <strong>Skyspaces</strong> sont des installations avec une <strong>ouverture (oculus)</strong> dans le toit qui encadre le ciel. En modifiant l'éclairage intérieur, l'artiste transforme le ciel en une surface bidimensionnelle de couleur pure. C'est une exploration phénoménologique de la lumière.</p>
                 <h3>5 Références & Points Clés pour l'Étude</h3>
@@ -685,7 +736,7 @@
         <details>
             <summary>8. The Weather Project, Tate Modern (2003) — Olafur Eliasson</summary>
             <div class="project-content">
-                <img src="https://olafureliasson.net/archive-storage/artwork/1/0/1055_800x.jpg" alt="Installation The Weather Project" class="project-image">
+                <img src="https://via.placeholder.com/1200x675/1a1a1a/d4af37?text=8.+The+Weather+Project" alt="Installation The Weather Project" class="project-image">
                 <h3>Concept & Architecture</h3>
                 <p><strong>The Weather Project</strong> recréait un soleil et un ciel intérieurs dans le Turbine Hall. Eliasson a utilisé des <strong>lampes monochromes</strong> et un <strong>miroir géant</strong> sur le plafond, créant une expérience collective et contemplative.</p>
                 <h3>5 Références & Points Clés pour l'Étude</h3>
@@ -731,7 +782,7 @@
         <details>
             <summary>9. Paper House, Yamanashi (1995) — Shigeru Ban</summary>
             <div class="project-content">
-                <img src="https://shigerubanarchitects.com/wp-content/uploads/2021/08/Paper-House-8-1920x1275.jpg" alt="Intérieur de la Paper House" class="project-image">
+                <img src="https://via.placeholder.com/1200x675/1a1a1a/d4af37?text=9.+Paper+House" alt="Intérieur de la Paper House" class="project-image">
                 <h3>Concept & Architecture</h3>
                 <p>La <strong>Paper House</strong> utilise 110 colonnes en <strong>tubes de carton recyclé</strong> pour former l'ossature. Cette maison expérimentale prouve la résilience et l'économie du matériau pour l'architecture d'urgence.</p>
                 <h3>5 Références & Points Clés pour l'Étude</h3>
@@ -777,7 +828,7 @@
         <details>
             <summary>10. Diogene, Vitra Campus (2013) — Renzo Piano</summary>
             <div class="project-content">
-                <img src="https://images.adsttc.com/media/images/51b9/e7a4/b3fc/4ba7/bc00/004c/large_jpg/DIOGENE_Foto_Julien_Lanoo_1.jpg?1371137949" alt="Micro-maison Diogene" class="project-image">
+                <img src="https://via.placeholder.com/1200x675/1a1a1a/d4af37?text=10.+Diogene" alt="Micro-maison Diogene" class="project-image">
                 <h3>Concept & Architecture</h3>
                 <p><strong>Diogene</strong> est un prototype de <strong>micro-maison autonome</strong> de 6 m². Entièrement équipé et <strong>indépendant en énergie</strong>, il se veut une cellule de vie élémentaire inspirée de la simplicité philosophique de Diogène le Cynique.</p>
                 <h3>5 Références & Points Clés pour l'Étude</h3>
@@ -823,7 +874,7 @@
         <details>
             <summary>11. Body Space (installations) — Antony Gormley</summary>
             <div class="project-content">
-                <img src="https://www.antonygormley.com/uploads/images/Gormley_2007_BLIND_LIGHT_INSTALLATION_VIEW_HAYWARD_GALLERY_LONDON_UK_02.jpg?v=1646219350" alt="Installation 'Blind Light' d'Antony Gormley" class="project-image">
+                <img src="https://via.placeholder.com/1200x675/1a1a1a/d4af37?text=11.+Body+Space+(Antony+Gormley)" alt="Installation 'Blind Light' d'Antony Gormley" class="project-image">
                 <h3>Concept & Architecture</h3>
                 <p><strong>Body Space</strong> explore la relation entre le corps humain, l'espace physique et le temps. Gormley utilise des <strong>moulages de son propre corps</strong>, transformant le corps en une unité de mesure de l'espace architectural.</p>
                 <h3>5 Références & Points Clés pour l'Étude</h3>
@@ -869,7 +920,7 @@
         <details>
             <summary>12. Aluminium boxes "nomadic" house (2014) — Sou Fujimoto</summary>
             <div class="project-content">
-                <img src="https://images.adsttc.com/media/images/5449/71a6/e58e/ce1e/8f00/00f9/large_jpg/sou_fujimoto_fiac_2014_many_small_cubes_10_serpentine_galleries.jpg?1414099355" alt="Installation 'Many Small Cubes'" class="project-image">
+                <img src="https://via.placeholder.com/1200x675/1a1a1a/d4af37?text=12.+Aluminium+boxes+(Many+Small+Cubes)" alt="Installation 'Many Small Cubes'" class="project-image">
                 <h3>Concept & Architecture</h3>
                 <p>Cette installation (aussi connue sous le nom de <strong>"Many Small Cubes"</strong>) est composée de <strong>petits cubes en aluminium de 55 cm</strong> empilés pour former une <strong>structure nébuleuse et poreuse</strong>. Le projet explore l'architecture comme une forêt d'espaces interstitiels.</p>
                 <h3>5 Références & Points Clés pour l'Étude</h3>
@@ -915,7 +966,7 @@
         <details>
             <summary>13. Fleinvær Refugium (2017) — Rintala Eggertsson Architects</summary>
             <div class="project-content">
-                <img src="https://images.adsttc.com/media/images/58e5/7a8e/e58e/cea3/6a00/0173/large_jpg/H-P-G-Arnfjord-0200.jpg?1491434117" alt="Le Fleinvær Refugium dans le paysage norvégien" class="project-image">
+                <img src="https://via.placeholder.com/1200x675/1a1a1a/d4af37?text=13.+Fleinvær+Refugium" alt="Le Fleinvær Refugium dans le paysage norvégien" class="project-image">
                 <h3>Concept & Architecture</h3>
                 <p>Le <strong>Fleinvær Refugium</strong> est un ensemble de <strong>petits refuges</strong> construits sur l'île de Fleinvær en Norvège. Les bâtiments sont en <strong>bois brut</strong>, posés sur des pilotis en acier, créant un lieu de retraite minimaliste en harmonie avec l'environnement.</p>
                 <h3>5 Références & Points Clés pour l'Étude</h3>
@@ -961,7 +1012,7 @@
         <details>
             <summary>14. Safe Haven Library (2009) — TYIN tegnestue Architects</summary>
             <div class="project-content">
-                <img src="https://images.adsttc.com/media/images/500f/4119/28ba/0d4e/2600/0176/large_jpg/stringio.jpg?1414457190" alt="Vue extérieure de la Safe Haven Library" class="project-image">
+                <img src="https://via.placeholder.com/1200x675/1a1a1a/d4af37?text=14.+Safe+Haven+Library" alt="Vue extérieure de la Safe Haven Library" class="project-image">
                 <h3>Concept & Architecture</h3>
                 <p>La <strong>Safe Haven Library</strong> est une bibliothèque pour enfants orphelins près de la frontière thaïlando-birmane. Construite avec une <strong>structure simple en bois</strong> et principalement de <strong>bois de récupération</strong>, elle représente une architecture sociale et durable.</p>
                 <h3>5 Références & Points Clés pour l'Étude</h3>
@@ -1007,7 +1058,7 @@
         <details>
             <summary>15. Micro Compact Home (2002) — Horden Cherry Lee</summary>
             <div class="project-content">
-                <img src="https://images.adsttc.com/media/images/5038/1042/28ba/0d59/9b00/0411/large_jpg/stringio.jpg?1414197495" alt="Intérieur de la Micro Compact Home" class="project-image">
+                <img src="https://via.placeholder.com/1200x675/1a1a1a/d4af37?text=15.+Micro+Compact+Home" alt="Intérieur de la Micro Compact Home" class="project-image">
                 <h3>Concept & Architecture</h3>
                 <p>Le <strong>Micro Compact Home</strong> est un <strong>cube de 2,66 m de côté</strong> (environ 7 m²). L'intérieur est organisé sur <strong>quatre niveaux fonctionnels</strong>, prouvant qu'un confort complet peut être atteint dans un volume minimal.</p>
                 <h3>5 Références & Points Clés pour l'Étude</h3>
@@ -1052,7 +1103,7 @@
         <details>
             <summary>16. Soe Ker Tie House, Thailand (2009) — TYIN tegnestue Architects</summary>
             <div class="project-content">
-                <img src="https://images.adsttc.com/media/images/500f/40c8/28ba/0d4e/2600/0173/large_jpg/stringio.jpg?1414457185" alt="Dortoirs Soe Ker Tie House (Maisons Papillons)" class="project-image">
+                <img src="https://via.placeholder.com/1200x675/1a1a1a/d4af37?text=16.+Soe+Ker+Tie+House" alt="Dortoirs Soe Ker Tie House (Maisons Papillons)" class="project-image">
                 <h3>Concept & Architecture</h3>
                 <p>Les <strong>Soe Ker Tie House</strong> (Maisons Papillons) sont des dortoirs pour orphelins Karen en Thaïlande. Utilisant des <strong>matériaux locaux et recyclés</strong> (bambou, pneus remplis de terre), le projet crée une valeur sociale élevée avec des moyens faibles. Les toits en forme de papillon permettent une ventilation naturelle optimale.</p>
                 <h3>5 Références & Points Clés pour l'Étude</h3>
@@ -1098,7 +1149,7 @@
         <details>
             <summary>17. Wood Pavilion #2 Experiment on Space (2022) — LIN Architects Prototype</summary>
             <div class="project-content">
-                <img src="https://static.designboom.com/wp-content/uploads/2022/03/lin-architecture-wood-pavilion-2-zhenjiang-china-designboom-1800.jpg" alt="Wood Pavilion #2 par LIN Architects" class="project-image">
+                <img src="https://via.placeholder.com/1200x675/1a1a1a/d4af37?text=17.+Wood+Pavilion+%232" alt="Wood Pavilion #2 par LIN Architects" class="project-image">
                 <h3>Concept & Architecture</h3>
                 <p>Le <strong>Wood Pavilion #2</strong> est une expérimentation sur l'espace minimal et la <strong>géométrie structurelle en bois</strong>. Situé à Zhenjiang en Chine, ce pavillon explore comment des <strong>modules répétitifs</strong> peuvent créer une architecture contemplative et légère en harmonie avec le paysage.</p>
                 <h3>5 Références & Points Clés pour l'Étude</h3>
@@ -1144,7 +1195,7 @@
         <details>
             <summary>18. Al Musalla at the Islamic Arts Biennale (2025) — EAST Architecture Studio</summary>
             <div class="project-content">
-                <img src="https://www.world-architects.com/images/Stories/Stories-2025/al-musalla-biennale/al-musalla-biennale-06.jpg" alt="Al Musalla à la Biennale des Arts Islamiques" class="project-image">
+                <img src="https://via.placeholder.com/1200x675/1a1a1a/d4af37?text=18.+Al+Musalla" alt="Al Musalla à la Biennale des Arts Islamiques" class="project-image">
                 <h3>Concept & Architecture</h3>
                 <p><strong>Al Musalla</strong> est une installation architecturale temporaire créée pour la Biennale des Arts Islamiques 2025. Le pavillon explore la <strong>géométrie sacrée islamique</strong> et crée un <strong>espace de prière et de contemplation minimaliste</strong>, fusionnant tradition et modernité dans une esthétique épurée.</p>
                 <h3>5 Références & Points Clés pour l'Étude</h3>
@@ -1174,7 +1225,7 @@
                         </tr>
                         <tr>
                             <td>Biennale Officielle</td>
-                            <td><a href="https://www.islamicartsbiennale.org/" target="_blank">Islamic Arts Biennale</a></td>
+                            <td><a href="https://www.islamicarts-biennale.org/" target="_blank">Islamic Arts Biennale</a></td>
                             <td>Contexte culturel et curatorial</td>
                         </tr>
                         <tr>
@@ -1186,3 +1237,112 @@
                 </table>
             </div>
         </details>
+        
+    </div> 
+</div> 
+    <script>
+    // --- 1. Création des étoiles ---
+    const starsContainer = document.getElementById('stars');
+    const starCount = 150; 
+    
+    for (let i = 0; i < starCount; i++) {
+        const star = document.createElement('div');
+        star.className = 'star';
+        
+        // --- Distribution (plus sur les côtés) ---
+        let leftPos = Math.random() * 100;
+        if (leftPos > 30 && leftPos < 70) { 
+            if (Math.random() > 0.3) { 
+                leftPos = (leftPos > 50) ? (70 + Math.random() * 30) : (Math.random() * 30);
+            }
+        }
+        star.style.left = leftPos + '%';
+        star.style.top = Math.random() * 100 + '%';
+        
+        // --- Assignation de profondeur (taille/flou) ---
+        const rand = Math.random();
+        if (rand > 0.8) {
+            star.classList.add('large');
+        } else if (rand > 0.5) {
+            star.classList.add('medium');
+        } else {
+            star.classList.add('small');
+        }
+        
+        // --- Stockage des données pour le "mouvement Epsilon" ---
+        star.dataset.epsilonSeed = Math.random() * 100;
+        star.dataset.epsilonSpeed = 0.001 + Math.random() * 0.002;
+        
+        /* * AMÉLIORATION : Stockage pour le "scintillement aléatoire"
+         * On donne à chaque étoile une heure de "départ" aléatoire
+         * pour son premier scintillement.
+        */
+        star.dataset.nextShineTime = Math.random() * 7000; // Délai initial aléatoire (0-7s)
+        
+        starsContainer.appendChild(star);
+    }
+    
+    // --- 2. Logique d'animation de parallaxe ---
+    
+    const stars = document.querySelectorAll('.star');
+    
+    let targetX = 0;
+    let currentX = 0;
+    const easeFactor = 0.05; 
+
+    document.addEventListener('mousemove', (e) => {
+        targetX = (e.clientX / window.innerWidth - 0.5) * 2;
+    });
+
+    function animateStars(time) {
+        currentX += (targetX - currentX) * easeFactor;
+        const scrollY = window.scrollY;
+        
+        stars.forEach((star) => {
+            let scrollSpeed, mouseSpeed;
+            
+            // --- Vitesses basées sur la profondeur ---
+            if (star.classList.contains('large')) {
+                scrollSpeed = 0.5; mouseSpeed = 12;
+            } else if (star.classList.contains('medium')) {
+                scrollSpeed = 0.3; mouseSpeed = 8;
+            } else { // 'small'
+                scrollSpeed = 0.1; mouseSpeed = 4;
+            }
+            
+            // --- Calcul du mouvement Epsilon (flottement) ---
+            const seed = parseFloat(star.dataset.epsilonSeed);
+            const speed = parseFloat(star.dataset.epsilonSpeed);
+            const epsilonX = Math.sin((time * speed) + seed) * 3;
+            const epsilonY = Math.cos((time * speed) + seed) * 3;
+            
+            // Calcule les positions finales
+            const x = (currentX * mouseSpeed) + epsilonX;
+            const y = (scrollY * scrollSpeed) + epsilonY;
+            
+            star.style.transform = `translate(${x}px, ${y}px)`;
+
+            /*
+             * AMÉLIORATION : Logique de scintillement lent et aléatoire
+             * 1. Vérifie si le temps "actuel" (time) a dépassé 
+             * l'heure du "prochain scintillement" de l'étoile.
+             * 2. Si oui, on lui donne une nouvelle opacité aléatoire.
+             * 3. On lui dit de refaire ça dans 3 à 7 secondes.
+             * La transition CSS (2.5s) s'occupe du fondu en douceur.
+            */
+            const nextShineTime = parseFloat(star.dataset.nextShineTime);
+            if (time > nextShineTime) {
+                // Nouvelle opacité cible (entre 0.4 et 1.0)
+                star.style.opacity = 0.4 + Math.random() * 0.6;
+                // Prochaine mise à jour dans 3 à 7 secondes
+                star.dataset.nextShineTime = time + 3000 + Math.random() * 4000;
+            }
+        });
+        
+        requestAnimationFrame(animateStars);
+    }
+    
+    requestAnimationFrame(animateStars);
+</script>
+</body>
+</html>
