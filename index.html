@@ -1249,7 +1249,6 @@
         const star = document.createElement('div');
         star.className = 'star';
         
-        // --- Distribution (plus sur les côtés) ---
         let leftPos = Math.random() * 100;
         if (leftPos > 30 && leftPos < 70) { 
             if (Math.random() > 0.3) { 
@@ -1259,7 +1258,6 @@
         star.style.left = leftPos + '%';
         star.style.top = Math.random() * 100 + '%';
         
-        // --- Assignation de profondeur (taille/flou) ---
         const rand = Math.random();
         if (rand > 0.8) {
             star.classList.add('large');
@@ -1269,15 +1267,9 @@
             star.classList.add('small');
         }
         
-        // --- Stockage des données pour le "mouvement Epsilon" ---
         star.dataset.epsilonSeed = Math.random() * 100;
         star.dataset.epsilonSpeed = 0.001 + Math.random() * 0.002;
-        
-        /* * AMÉLIORATION : Stockage pour le "scintillement aléatoire"
-         * On donne à chaque étoile une heure de "départ" aléatoire
-         * pour son premier scintillement.
-        */
-        star.dataset.nextShineTime = Math.random() * 7000; // Délai initial aléatoire (0-7s)
+        star.dataset.nextShineTime = Math.random() * 7000;
         
         starsContainer.appendChild(star);
     }
@@ -1289,6 +1281,13 @@
     let targetX = 0;
     let currentX = 0;
     const easeFactor = 0.05; 
+    
+    // Stocker la hauteur de la fenêtre pour l'utiliser dans la boucle
+    let viewportHeight = window.innerHeight;
+    // Mettre à jour en cas de redimensionnement
+    window.addEventListener('resize', () => {
+        viewportHeight = window.innerHeight;
+    });
 
     document.addEventListener('mousemove', (e) => {
         targetX = (e.clientX / window.innerWidth - 0.5) * 2;
@@ -1301,7 +1300,6 @@
         stars.forEach((star) => {
             let scrollSpeed, mouseSpeed;
             
-            // --- Vitesses basées sur la profondeur ---
             if (star.classList.contains('large')) {
                 scrollSpeed = 0.5; mouseSpeed = 12;
             } else if (star.classList.contains('medium')) {
@@ -1310,31 +1308,30 @@
                 scrollSpeed = 0.1; mouseSpeed = 4;
             }
             
-            // --- Calcul du mouvement Epsilon (flottement) ---
             const seed = parseFloat(star.dataset.epsilonSeed);
             const speed = parseFloat(star.dataset.epsilonSpeed);
             const epsilonX = Math.sin((time * speed) + seed) * 3;
             const epsilonY = Math.cos((time * speed) + seed) * 3;
             
-            // Calcule les positions finales
+            // Calcule la position X
             const x = (currentX * mouseSpeed) + epsilonX;
-            const y = (scrollY * scrollSpeed) + epsilonY;
-            
-            star.style.transform = `translate(${x}px, ${y}px)`;
 
             /*
-             * AMÉLIORATION : Logique de scintillement lent et aléatoire
-             * 1. Vérifie si le temps "actuel" (time) a dépassé 
-             * l'heure du "prochain scintillement" de l'étoile.
-             * 2. Si oui, on lui donne une nouvelle opacité aléatoire.
-             * 3. On lui dit de refaire ça dans 3 à 7 secondes.
-             * La transition CSS (2.5s) s'occupe du fondu en douceur.
+             * CORRECTION : Logique de parallaxe en boucle
+             * On utilise (scrollY % viewportHeight)
+             * Cela "réinitialise" le calcul de parallaxe à chaque fois
+             * que vous faites défiler d'une hauteur d'écran,
+             * empêchant les étoiles de s'échapper.
             */
+            const y = ((scrollY % viewportHeight) * scrollSpeed) + epsilonY;
+            
+            // Applique la transformation
+            star.style.transform = `translate(${x}px, ${y}px)`;
+
+            // Logique de scintillement
             const nextShineTime = parseFloat(star.dataset.nextShineTime);
             if (time > nextShineTime) {
-                // Nouvelle opacité cible (entre 0.4 et 1.0)
                 star.style.opacity = 0.4 + Math.random() * 0.6;
-                // Prochaine mise à jour dans 3 à 7 secondes
                 star.dataset.nextShineTime = time + 3000 + Math.random() * 4000;
             }
         });
